@@ -5,6 +5,7 @@ export const DOMAIN_API = {
 export const ENDPOINT = {
   auth: {
     login: "/api/v1/auth/user/login",
+    register: "/api/v1/auth/user/register",
     logout: "/api/v1/auth/user/logout",
   },
   user: {

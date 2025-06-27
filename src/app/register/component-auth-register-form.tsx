@@ -1,37 +1,22 @@
 "use client";
 import IconLockDots from "@/components/icon/icon-lock-dots";
 import IconMail from "@/components/icon/icon-mail";
-import { COOKIES } from "@/constants/common";
+import IconUser from "@/components/icon/icon-user";
 import { ROUTES } from "@/constants/routes";
 import { useAuth } from "@/hooks/useAuth";
 import { TInputForm } from "@/types/inputForm";
-import { getCookie } from "cookies-next";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const ComponentsAuthLoginForm = () => {
-  const { login, isRemember, loading } = useAuth();
+export const ComponentAuthRegisterForm = () => {
+  const { register, isRemember, loading } = useAuth();
   const [inputs, setInputs] = useState<TInputForm>({});
   const [showPasswd, setShowPasswd] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = getCookie(COOKIES.tokenName);
-    if (token) {
-      return router.replace("/");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleShowPasswd = () => {
-    setShowPasswd(!showPasswd);
-  };
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
-    await login(inputs, isRemember);
+    await register(inputs, isRemember);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +24,28 @@ const ComponentsAuthLoginForm = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
+  const handleShowPasswd = () => {
+    setShowPasswd(!showPasswd);
+  };
   return (
     <form className="space-y-5 dark:text-white" onSubmit={submitForm}>
+      <div>
+        <label htmlFor="Name">Name</label>
+        <div className="relative text-white-dark">
+          <input
+            id="Name"
+            type="text"
+            name="name"
+            value={inputs.name || ""}
+            onChange={handleChange}
+            placeholder="Enter Name"
+            className="form-input ps-10 placeholder:text-white-dark"
+          />
+          <span className="absolute start-4 top-1/2 -translate-y-1/2">
+            <IconUser fill={true} />
+          </span>
+        </div>
+      </div>
       <div>
         <label htmlFor="Email">Email</label>
         <div className="relative text-white-dark">
@@ -99,16 +104,14 @@ const ComponentsAuthLoginForm = () => {
         {loading ? "Loading..." : "Sign in"}
       </button>
       <div className="text-center dark:text-white">
-        {"Don't have an account ? "}
+        {"Already have an account ? "}
         <Link
-          href={ROUTES.REGISTER}
+          href={ROUTES.LOGIN}
           className="uppercase text-primary underline transition hover:text-black dark:hover:text-white"
         >
-          SIGN UP
+          SIGN IN
         </Link>
       </div>
     </form>
   );
 };
-
-export default ComponentsAuthLoginForm;

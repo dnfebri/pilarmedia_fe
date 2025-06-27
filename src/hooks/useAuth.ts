@@ -14,6 +14,34 @@ export const useAuth = () => {
   const [isRemember, setIsRemember] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const register = async (inputs: TInputForm, isRememberMe?: boolean) => {
+    const optionCookie: { maxAge?: number } = {
+      maxAge: 60 * 60,
+    };
+    if (isRememberMe) {
+      optionCookie.maxAge = 60 * 60 * 24 * 7;
+    }
+    setLoading(true);
+    try {
+      const res = await ApiAxios.post(
+        `${DOMAIN_API.domain}${ENDPOINT.auth.register}`,
+        { ...inputs }
+      );
+      const data = await res.data.data;
+      setToast({
+        success: true,
+        massage: "Create User " + data.name + " Success",
+      });
+      setCookie(COOKIES.tokenName, data.token, optionCookie);
+      router.push(ROUTES.DASHBOARD);
+    } catch (error: any) {
+      console.log("Login", error);
+      setToast({ error: true, massage: error.response.data.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const login = async (inputs: TInputForm, isRememberMe?: boolean) => {
     const optionCookie: { maxAge?: number } = {
       maxAge: 60 * 60,
@@ -32,7 +60,7 @@ export const useAuth = () => {
       router.push(ROUTES.DASHBOARD);
     } catch (error: any) {
       console.log("Login", error);
-      setToast({ error: true, massage: error.response.data.error });
+      setToast({ error: true, massage: error.response.data.message });
     } finally {
       setLoading(false);
     }
@@ -55,6 +83,7 @@ export const useAuth = () => {
   return {
     isAuthenticated: false,
     login,
+    register,
     logout,
     loading,
     isRemember,
