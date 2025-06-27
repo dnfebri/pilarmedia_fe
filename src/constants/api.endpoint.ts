@@ -1,5 +1,5 @@
 export const DOMAIN_API = {
-  domain: "http://localhost:9000",
+  domain: process.env.NEXT_PUBLIC_API_APP,
 };
 
 export const ENDPOINT = {

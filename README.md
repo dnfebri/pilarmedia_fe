@@ -1,3 +1,13 @@
+# Setup instructions
+
+1. Clone aplikasi
+2. Copy file env.example to .env
+3. intall aplikasi "yarn install"
+4. Jalankan aplikasi "yarn start:dev"
+5. Secara default aplikasi berjalan di port 3000
+
+#
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
