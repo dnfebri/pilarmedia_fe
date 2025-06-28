@@ -8,6 +8,10 @@ export const ENDPOINT = {
     register: "/api/v1/auth/user/register",
     logout: "/api/v1/auth/user/logout",
   },
+  post: {
+    DEFAULT: "/api/v1/post",
+    all: "/api/v1/post/all",
+  },
   user: {
     DEFAULT: "/api/users",
   },
